@@ -146,7 +146,7 @@ namespace CubeCreationEngine.Core
                 if (chunks.TryGetValue(n, out c))
                 {
                     Destroy(c.chunk);
-                    c.Save(); // saves the old chunk to the file
+                    //c.Save(); // saves the old chunk to the file
                     chunks.TryRemove(n, out c);
                     yield return null;
                 }

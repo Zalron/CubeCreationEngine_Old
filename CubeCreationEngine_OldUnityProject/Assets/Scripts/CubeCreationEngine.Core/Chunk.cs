@@ -6,29 +6,29 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace CubeCreationEngine.Core
 {
-    [Serializable]
-    class BlockData // a Serializable class that will convert block data into binary
-    {
-        public Block.BlockType[,,] matrix; // a matrix that holds the block type and position in the chunk
-        public BlockData() // empty constructor that is required
-        {
-        }
-        public BlockData(Block[,,] b) // a constructor that we can pass through chunk data 
-            // looping through the block data to get a matrix of the block type and position
-        {
-            matrix = new Block.BlockType[World.chunkSize, World.chunkSize, World.chunkSize];
-            for (int z = 0; z < World.chunkSize; z++)
-            {
-                for (int y = 0; y < World.chunkSize; y++)
-                {
-                    for (int x = 0; x < World.chunkSize; x++)
-                    {
-                        matrix[x, y, z] = b[x, y, z].bType;
-                    }
-                }
-            }
-        }
-    }
+    //[Serializable]
+    //class BlockData // a Serializable class that will convert block data into binary
+    //{
+    //    public Block.BlockType[,,] matrix; // a matrix that holds the block type and position in the chunk
+    //    public BlockData() // empty constructor that is required
+    //    {
+    //    }
+    //    public BlockData(Block[,,] b) // a constructor that we can pass through chunk data 
+    //        // looping through the block data to get a matrix of the block type and position
+    //    {
+    //        matrix = new Block.BlockType[World.chunkSize, World.chunkSize, World.chunkSize];
+    //        for (int z = 0; z < World.chunkSize; z++)
+    //        {
+    //            for (int y = 0; y < World.chunkSize; y++)
+    //            {
+    //                for (int x = 0; x < World.chunkSize; x++)
+    //                {
+    //                    matrix[x, y, z] = b[x, y, z].bType;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     public class Chunk
     {
         public enum ChunkStatus { DRAW, DONE, KEEP }
@@ -46,41 +46,41 @@ namespace CubeCreationEngine.Core
         public float touchedTime;
         public bool treesCreated;
         public ChunkMB mb; //the chunks monobehaviour script
-        BlockData bd; // the class that handles saving the block data
+        //BlockData bd; // the class that handles saving the block data
         public bool changed = false; //checks of any changes to the blocks in the chunks
         string BuildChunkFileName(Vector3 v) // builds a chunk file name for each chunk 
         {
             return Application.persistentDataPath + "/savedata/Chunk_" + (int)v.x + "_" + (int)v.y + "_" + (int)v.z + "_" + World.chunkSize + "_" + World.radius + ".dat";
         }
-        bool Load()// read data from file
-        {
-            string chunkFile = BuildChunkFileName(chunk.transform.position); // contructs the file name
-            if (File.Exists(chunkFile)) // if we have saved a File
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open(chunkFile, FileMode.Open);
-                bd = new BlockData();
-                bd = (BlockData)bf.Deserialize(file); // putting it back into bd
-                file.Close();
-                //Debug.Log("Loading chunk from file: " + chunkFile);
-                return true;
-            }
-            return false;
-        }
-        public void Save() // write data to file
-        {
-            string chunkFile = BuildChunkFileName(chunk.transform.position); // contructs the file name
-            if (File.Exists(chunkFile)) // if we have saved a File
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(chunkFile));
-            }
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(chunkFile, FileMode.OpenOrCreate);
-            //bd = new BlockData(dirtBlockChunkData);
-            bf.Serialize(file, bd); // writing the data
-            file.Close();
-            //Debug.Log("Saving chunk from file: " + chunkFile);
-        }
+        //bool Load()// read data from file
+        //{
+        //    string chunkFile = BuildChunkFileName(chunk.transform.position); // contructs the file name
+        //    if (File.Exists(chunkFile)) // if we have saved a File
+        //    {
+        //        BinaryFormatter bf = new BinaryFormatter();
+        //        FileStream file = File.Open(chunkFile, FileMode.Open);
+        //        bd = new BlockData();
+        //        bd = (BlockData)bf.Deserialize(file); // putting it back into bd
+        //        file.Close();
+        //        //Debug.Log("Loading chunk from file: " + chunkFile);
+        //        return true;
+        //    }
+        //    return false;
+        //}
+        //public void Save() // write data to file
+        //{
+        //    string chunkFile = BuildChunkFileName(chunk.transform.position); // contructs the file name
+        //    if (File.Exists(chunkFile)) // if we have saved a File
+        //    {
+        //        Directory.CreateDirectory(Path.GetDirectoryName(chunkFile));
+        //    }
+        //    BinaryFormatter bf = new BinaryFormatter();
+        //    FileStream file = File.Open(chunkFile, FileMode.OpenOrCreate);
+        //    //bd = new BlockData(dirtBlockChunkData);
+        //    bf.Serialize(file, bd); // writing the data
+        //    file.Close();
+        //    //Debug.Log("Saving chunk from file: " + chunkFile);
+        //}
         public void UpdateChunk() // updates the chunk 
         {
             for (int z = 0; z < World.chunkSize; z++)
@@ -96,11 +96,16 @@ namespace CubeCreationEngine.Core
         }
         void BuildChunk() // Creating the chunks asynchronous to the normal unity logic
         {
-            bool dataFromFile = false;
-            dataFromFile = Load(); // first we load data from a save file
+            //bool dataFromFile = false;
+            //dataFromFile = Load(); // first we load data from a save file
             //touchedTime = Time.time;
             // Declaring the chunkData array
-            //dirtBlockChunkData = new DirtBlock[World.chunkSize, World.chunkSize, World.chunkSize];
+            dirtBlockChunkData = new DirtBlock[World.chunkSize, World.chunkSize, World.chunkSize];
+            airBlockChunkData = new AirBlock[World.chunkSize, World.chunkSize, World.chunkSize];
+            stoneBlockChunkData = new StoneBlock[World.chunkSize, World.chunkSize, World.chunkSize];
+            grassBlockChunkData = new GrassBlock[World.chunkSize, World.chunkSize, World.chunkSize];
+            waterBlockChunkData = new WaterBlock[World.chunkSize, World.chunkSize, World.chunkSize];
+            airBlockChunkData = new AirBlock[World.chunkSize, World.chunkSize, World.chunkSize];
             //Creating the blocks
             for (int z = 0; z < World.chunkSize; z++)
             {
@@ -141,7 +146,7 @@ namespace CubeCreationEngine.Core
                             }
                             else
                             {
-                                //dirtBlockChunkData[x, y, z] = new StoneBlock(pos, chunk.gameObject, cubeMaterial);
+                                stoneBlockChunkData[x, y, z] = new StoneBlock(pos, chunk.gameObject, cubeMaterial);
                             }
                         }
                         else if (worldY == surfaceHeight)
@@ -152,13 +157,13 @@ namespace CubeCreationEngine.Core
                             }
                             else
                             {
-                                //dirtBlockChunkData[x, y, z] = new DirtBlock(pos, chunk.gameObject, cubeMaterial);
+                                dirtBlockChunkData[x, y, z] = new DirtBlock(pos, chunk.gameObject, cubeMaterial);
                             }
                            
                         }
                         else if (worldY < surfaceHeight)
                         {
-                            //dirtBlockChunkData[x, y, z] = new GrassBlock(pos, chunk.gameObject, cubeMaterial);
+                            grassBlockChunkData[x, y, z] = new GrassBlock(pos, chunk.gameObject, cubeMaterial);
                         }
                         else if (worldY == surfaceHeight && worldY <= Utilities.maxWaterSpawnHeight)
                         {
@@ -168,11 +173,11 @@ namespace CubeCreationEngine.Core
                         {
                             waterBlockChunkData[x, y, z] = new WaterBlock(pos, fluid.gameObject, fluidMaterial);
                         }
-                        else
+                        if (airBlockChunkData[x, y, z].bType != Block.BlockType.WATER && Utilities.fBM3D(worldX, worldY, worldZ, 0.1f, 3) < 0.42f)
                         {
                             airBlockChunkData[x, y, z] = new AirBlock(pos, chunk.gameObject, cubeMaterial);
                         }
-                        if (airBlockChunkData[x,y,z].bType != Block.BlockType.WATER && Utilities.fBM3D(worldX, worldY, worldZ, 0.1f, 3) < 0.42f)
+                        else
                         {
                             airBlockChunkData[x, y, z] = new AirBlock(pos, chunk.gameObject, cubeMaterial);
                         }

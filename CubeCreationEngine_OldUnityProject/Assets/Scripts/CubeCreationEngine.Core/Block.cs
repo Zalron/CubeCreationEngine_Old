@@ -273,7 +273,7 @@ namespace CubeCreationEngine.Core
             }
             return i;
         }
-        public DirtBlock GetBlock(int x, int y, int z) // most of the code from HasSolidNeighbour but HasSolidNeighbour calls this function
+        public Block GetBlock(int x, int y, int z) // most of the code from HasSolidNeighbour but HasSolidNeighbour calls this function
         {
             DirtBlock[,,] chunks;
             if (x < 0 || x >= World.chunkSize || y < 0 || y >= World.chunkSize || z < 0 || z >= World.chunkSize) // checking for solid neighbour in other chunks
@@ -317,7 +317,7 @@ namespace CubeCreationEngine.Core
         {
             try
             {
-                DirtBlock b = GetBlock(x, y, z);
+                Block b = GetBlock(x, y, z);
                 if (b != null)
                 {
                     return (b.isSolid || b.bType == bType); // checking if the neighbour is solid or if the neighbour is the same block (used for water drawing)

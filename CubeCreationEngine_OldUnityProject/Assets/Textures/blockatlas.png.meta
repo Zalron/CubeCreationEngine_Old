@@ -259,7 +259,7 @@ TextureImporter:
     21300508: 0.875,0.9375|0.9375,0.9375|0.875,1|0.9375,1
     21300510: 0.9375,0.9375|1,0.9375|0.9375,1|1,1
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0

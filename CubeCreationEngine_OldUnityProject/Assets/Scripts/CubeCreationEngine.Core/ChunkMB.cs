@@ -103,12 +103,12 @@ public class ChunkMB: MonoBehaviour
         }
 
     }
-    void SaveProgress() // checks if this chunk has any blocks change 
-    {
-        if (owner.changed) //if true it will save the changes
-        {
-            owner.Save();
-            owner.changed = false;
-        }
-    }
+    //void SaveProgress() // checks if this chunk has any blocks change 
+    //{
+    //    if (owner.changed) //if true it will save the changes
+    //    {
+    //        owner.Save();
+    //        owner.changed = false;
+    //    }
+    //}
 }
